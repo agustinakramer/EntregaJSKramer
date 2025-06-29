@@ -1,0 +1,103 @@
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f1f4f9;
+  color: #333;
+  padding: 20px;
+}
+
+.contenedor {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+header h1 {
+  font-size: 2rem;
+  color: #2c3e50;
+}
+
+.agenda {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/* Secciones */
+section h2 {
+  margin-bottom: 15px;
+  color: #34495e;
+}
+
+#lista-turnos, #confirmados {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Seccion de Turnos */
+.turno {
+  background-color: #ffffff;
+  border-radius: 10px;
+  border-left: 5px solid #3498db;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.turno:hover {
+  background-color: #f0f8ff;
+}
+
+/* Seccion de Turnos Confirmados */
+.turno-confirmado {
+  border-left-color: #2ecc71;
+}
+
+.info-turno p {
+  margin: 2px 0;
+  font-size: 1rem;
+}
+
+/* Botón */
+button {
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .turno {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  button {
+    width: 100%;
+    text-align: center;
+  }
+}
