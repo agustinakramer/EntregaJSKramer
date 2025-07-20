@@ -1,103 +1,273 @@
+ * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #f1f4f9;
-  color: #333;
-  padding: 20px;
-}
+        .contenedor {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
 
-.contenedor {
-  max-width: 800px;
-  margin: 0 auto;
-}
+        header {
+            background: linear-gradient(45deg, #2196F3, #21CBF3);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
 
-header {
-  text-align: center;
-  margin-bottom: 40px;
-}
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
 
-header h1 {
-  font-size: 2rem;
-  color: #2c3e50;
-}
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
 
-.agenda {
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-}
+        .main-content {
+            padding: 40px;
+        }
 
-/* Secciones */
-section h2 {
-  margin-bottom: 15px;
-  color: #34495e;
-}
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
 
-#lista-turnos, #confirmados {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-/* Seccion de Turnos */
-.turno {
-  background-color: #ffffff;
-  border-radius: 10px;
-  border-left: 5px solid #3498db;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
-}
+        .btn-primary {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+        }
 
-.turno:hover {
-  background-color: #f0f8ff;
-}
+        .btn-secondary {
+            background: linear-gradient(45deg, #FF9800, #F57C00);
+            color: white;
+        }
 
-/* Seccion de Turnos Confirmados */
-.turno-confirmado {
-  border-left-color: #2ecc71;
-}
+        .btn-danger {
+            background: linear-gradient(45deg, #f44336, #d32f2f);
+            color: white;
+        }
 
-.info-turno p {
-  margin: 2px 0;
-  font-size: 1rem;
-}
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
 
-/* Botón */
-button {
-  background-color: #3498db;
-  color: #fff;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.3s ease;
-}
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
 
-button:hover {
-  background-color: #2980b9;
-}
+        .stat-card {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+        }
 
-/* Responsive */
-@media (max-width: 600px) {
-  .turno {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
 
-  button {
-    width: 100%;
-    text-align: center;
-  }
-}
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .agenda {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+        }
+
+        section h2 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-size: 1.5rem;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        #lista-turnos, #confirmados {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            min-height: 300px;
+        }
+
+        .turno {
+            background: white;
+            border-radius: 10px;
+            border-left: 5px solid #3498db;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .turno:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .turno-confirmado {
+            border-left-color: #2ecc71;
+            background: #f0fff4;
+        }
+
+        .turno-info {
+            flex: 1;
+        }
+
+        .turno-info span {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .turno-doctor {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        .turno button, .btn-cancel {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+
+        .turno button:hover {
+            background: #2980b9;
+            transform: scale(1.05);
+        }
+
+        .btn-cancel {
+            background: #e74c3c;
+        }
+
+        .btn-cancel:hover {
+            background: #c0392b;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #7f8c8d;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #bdc3c7;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .agenda {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .turno {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .turno button, .btn-cancel {
+                width: 100%;
+                margin-left: 0;
+            }
+        }
+
+        .icon-calendar::before { content: "📅 "; }
+        .icon-refresh::before { content: "🔄 "; }
+        .icon-list::before { content: "📋 "; }
+        .icon-check::before { content: "✅ "; }
+        .icon-cancel::before { content: "❌ "; }
+        .icon-clock::before { content: "⏰ "; }
+        .icon-doctor::before { content: "👨‍⚕️ "; }

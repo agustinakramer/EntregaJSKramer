@@ -1,83 +1,298 @@
-// dejo comentado el anterior ejercicio, como buena práctica no debería dejar código comentado, pero lo hago para distiguir entre lo que hice previamente y las correciones pautadas
-//  let turnos = [
-//     {id: "1", dia: "Lunes 10", hora: "10:00"},
-//     {id: "2", dia: "Lunes 10", hora: "11:00"},
-//     {id: "3", dia: "Lunes 10", hora: "12:00"},
-//     {id: "4", dia: "Martes 11", hora: "10:00"},
-//     {id: "5", dia: "Martes 11", hora: "11:00"},
-//     {id: "6", dia: "Martes 11", hora: "12:00"},
-//     {id: "7", dia: "Miércoles 12", hora: "10:00"},
-//     {id: "8", dia: "Miércoles 12", hora: "11:00"},
-//     {id: "9", dia: "Miércoles 12", hora: "12:00"},
-//     {id: "10", dia: "Jueves 13", hora: "10:00"},
-//     {id: "11", dia: "Jueves 13", hora: "11:00"},
-// ];
+class SimuladorTurnos {
+  constructor() {
+    this.turnosDisponibles = [];
+    this.turnosConfirmados = [];
+    this.datosOriginales = [];
 
-// En esta entrega modifico el codigo para manipular directamente el HTML en lugar de cargar un array extra y perder performance
-let turnosSeleccionados = [];
+    this.inicializar();
+    this.configurarEventos();
+  }
 
+  // Inicializar la aplicación
+  async inicializar() {
+    this.cargarTurnosDesdeStorage();
+    await this.cargarDatos();
+    this.renderizarTurnos();
+    this.actualizarEstadisticas();
+  }
 
+  async cargarDatos() {
+    try {
+      // Simulamos una petición fetch con datos JSON
+      const response = await fetch("./turnosDisponibles.json")
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Error del servidor " + response.statusText);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data);
+        });
+      this.datosOriginales = response.turnos;
 
+      // Si no hay turnos cargados en storage, usar los datos originales
+      if (this.turnosDisponibles.length === 0) {
+        this.turnosDisponibles = [...this.datosOriginales];
+      }
+    } catch (error) {
+      swal("Error", "No se pudieron cargar los datos del sistema", "error");
+    }
+  }
+  // Configurar eventos de la interfaz
+            configurarEventos() {
+                document.getElementById('btn-cargar-turnos').addEventListener('click', () => this.cargarNuevaSemana());
+                document.getElementById('btn-ver-turnos').addEventListener('click', () => this.mostrarTodosLosTurnos());
+                document.getElementById('btn-limpiar-todo').addEventListener('click', () => this.limpiarTodo());
+            }
 
-function seleccionarTurno() {
+            // Renderizar todos los turnos
+            renderizarTurnos() {
+                this.renderizarTurnosDisponibles();
+                this.renderizarTurnosConfirmados();
+            }
 
-    // turnos Seleccionados almacena objetos a partir de los eventos de click en los botones de turno
-document.querySelectorAll(".turno button").forEach(button => { 
-    button.addEventListener("click", () =>{
-    const turnoDiv = button.parentElement; // selecciono el div correspondiente al turno completo
-    const id = turnoDiv.dataset.id;
-    const dia = turnoDiv.dataset.dia;
-    const hora = turnoDiv.dataset.hora;
+            // Renderizar turnos disponibles
+            renderizarTurnosDisponibles() {
+                const container = document.getElementById('lista-turnos');
+                
+                if (this.turnosDisponibles.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div style="font-size: 4rem; margin-bottom: 20px;">📅</div>
+                            <h3>No hay turnos disponibles</h3>
+                            <p>Carga una nueva semana para ver turnos disponibles</p>
+                        </div>
+                    `;
+                    return;
+                }
 
-    // primero chequeo si el turno ya fue seleccionado
-if(turnosSeleccionados.find(t => t.id === id)) return;
+                container.innerHTML = '';
+                this.turnosDisponibles.forEach(turno => {
+                    const turnoElement = this.crearElementoTurno(turno, false);
+                    container.appendChild(turnoElement);
+                });
+            }
 
-// agrego el turno seleccionado al array de turnos seleccionados
-    turnosSeleccionados.push({id, dia, hora});
+            // Renderizar turnos confirmados
+            renderizarTurnosConfirmados() {
+                const container = document.getElementById('confirmados');
+                
+                if (this.turnosConfirmados.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div style="font-size: 4rem; margin-bottom: 20px;">📋</div>
+                            <h3>No hay turnos confirmados</h3>
+                            <p>Los turnos que reserves aparecerán aquí</p>
+                        </div>
+                    `;
+                    return;
+                }
 
-     // Creo un nuevo div para mostrar el turno confirmado en la sección de confirmados
-      const nuevoDiv = document.createElement("div");
-      nuevoDiv.innerHTML = `<span>Turno confirmado: ${dia} a las ${hora}</span>`;
+                container.innerHTML = '';
+                this.turnosConfirmados.forEach(turno => {
+                    const turnoElement = this.crearElementoTurno(turno, true);
+                    container.appendChild(turnoElement);
+                });
+            }
 
-      // Agrego al contenedor de confirmados la info del nuevo div creado
-      document.getElementById("confirmados").appendChild(nuevoDiv);
+            // Crear elemento HTML para un turno
+            crearElementoTurno(turno, esConfirmado) {
+                const div = document.createElement('div');
+                div.className = `turno ${esConfirmado ? 'turno-confirmado' : ''}`;
+                div.dataset.id = turno.id;
 
-    // elimino el turno dinamicamente de la seccion de turnos disponibles
-    turnoDiv.remove();
-});
+                div.innerHTML = `
+                    <div class="turno-info">
+                        <span><span class="icon-clock"></span>${turno.dia} - ${turno.hora}</span>
+                        <div class="turno-doctor">
+                            <span class="icon-doctor"></span>${turno.doctor} - ${turno.especialidad}
+                        </div>
+                    </div>
+                    <button class="${esConfirmado ? 'btn-cancel' : ''}" 
+                            onclick="simulador.${esConfirmado ? 'cancelarTurno' : 'reservarTurno'}('${turno.id}')">
+                        ${esConfirmado ? '<span class="icon-cancel"></span>Cancelar' : '<span class="icon-check"></span>Reservar'}
+                    </button>
+                `;
 
-});
+                return div;
+            }
 
+            // Reservar un turno
+            reservarTurno(id) {
+                const turno = this.turnosDisponibles.find(t => t.id === id);
+                if (!turno) return;
 
-    
+                // Confirmar reserva
+                swal({
+                    title: "Confirmar Reserva",
+                    text: `¿Desea reservar el turno del ${turno.dia} a las ${turno.hora} con ${turno.doctor}?`,
+                    icon: "info",
+                    buttons: ["Cancelar", "Confirmar"],
+                    dangerMode: false,
+                })
+                .then((confirmado) => {
+                    if (confirmado) {
+                        // Mover turno de disponibles a confirmados
+                        this.turnosDisponibles = this.turnosDisponibles.filter(t => t.id !== id);
+                        this.turnosConfirmados.push(turno);
+                        
+                        // Guardar en storage y actualizar interfaz
+                        this.guardarTurnosEnStorage();
+                        this.renderizarTurnos();
+                        this.actualizarEstadisticas();
+                        
+                        swal("¡Turno Reservado!", 
+                             `Su turno con ${turno.doctor} ha sido confirmado para el ${turno.dia} a las ${turno.hora}`, 
+                             "success");
+                    }
+                });
+            }
 
+            // Cancelar un turno
+            cancelarTurno(id) {
+                const turno = this.turnosConfirmados.find(t => t.id === id);
+                if (!turno) return;
 
+                swal({
+                    title: "Cancelar Turno",
+                    text: `¿Está seguro que desea cancelar el turno del ${turno.dia} a las ${turno.hora}?`,
+                    icon: "warning",
+                    buttons: ["No", "Sí, cancelar"],
+                    dangerMode: true,
+                })
+                .then((confirmado) => {
+                    if (confirmado) {
+                        // Mover turno de confirmados a disponibles
+                        this.turnosConfirmados = this.turnosConfirmados.filter(t => t.id !== id);
+                        this.turnosDisponibles.push(turno);
+                        
+                        // Ordenar turnos disponibles por día y hora
+                        this.turnosDisponibles.sort((a, b) => {
+                            if (a.dia !== b.dia) return a.dia.localeCompare(b.dia);
+                            return a.hora.localeCompare(b.hora);
+                        });
+                        
+                        // Guardar en storage y actualizar interfaz
+                        this.guardarTurnosEnStorage();
+                        this.renderizarTurnos();
+                        this.actualizarEstadisticas();
+                        
+                        swal("Turno Cancelado", "El turno ha sido liberado y está disponible nuevamente", "success");
+                    }
+                });
+            }
 
+            // Cargar nueva semana
+            cargarNuevaSemana() {
+                swal({
+                    title: "Nueva Semana",
+                    text: "¿Desea cargar una nueva semana? Esto restaurará todos los turnos disponibles.",
+                    icon: "info",
+                    buttons: ["Cancelar", "Cargar Nueva Semana"],
+                })
+                .then((confirmado) => {
+                    if (confirmado) {
+                        this.turnosDisponibles = [...this.datosOriginales];
+                        this.turnosConfirmados = [];
+                        this.guardarTurnosEnStorage();
+                        this.renderizarTurnos();
+                        this.actualizarEstadisticas();
+                        
+                        swal("¡Nueva Semana Cargada!", "Todos los turnos están disponibles nuevamente", "success");
+                    }
+                });
+            }
 
-    // while (true) {
-    //     let mensaje = "Seleccione un turno:\n";
-    //     for (let i = 0; i < turnos.length; i++) {
-    //         mensaje += `${turnos[i].id}. ${turnos[i].dia} - ${turnos[i].hora}\n`;
-    //     }
-    //     let turnoSeleccionado = prompt(mensaje);
-    //     if (turnoSeleccionado === null) return null; // Cancela la operación
+            // Mostrar información de todos los turnos
+            mostrarTodosLosTurnos() {
+                const total = this.turnosDisponibles.length + this.turnosConfirmados.length;
+                const mensaje = `
+                    📊 RESUMEN DE TURNOS:
+                    
+                    • Turnos disponibles: ${this.turnosDisponibles.length}
+                    • Turnos confirmados: ${this.turnosConfirmados.length}
+                    • Total de turnos: ${total}
+                    
+                    ${this.turnosConfirmados.length > 0 ? 
+                        '\n🗓️ PRÓXIMOS TURNOS:\n' + 
+                        this.turnosConfirmados.map(t => 
+                            `• ${t.dia} ${t.hora} - ${t.doctor}`
+                        ).join('\n') 
+                        : '\nNo tiene turnos confirmados'}
+                `;
+                
+                swal("Estado de Turnos", mensaje, "info");
+            }
 
-    //     turnoSeleccionado = turnoSeleccionado.trim();
-    //     let turno = turnos.find(t => t.id === turnoSeleccionado);
-    //     if (turno) {
-    //         turnos.splice(turnos.indexOf(turno), 1); // Elimina el turno reservado
-    //         turnosSeleccionados.push(turno); // Agrega el turno a los seleccionados
-    //         return `Turno confirmado: ${turno.dia} a las ${turno.hora}`;
-    //     } else {
-    //         alert("Turno no encontrado. Por favor, seleccione un turno válido.");
-    //     }
-    // }
-}
+            // Limpiar todos los datos
+            limpiarTodo() {
+                swal({
+                    title: "¿Está seguro?",
+                    text: "Esto eliminará todos los turnos confirmados y reiniciará el sistema",
+                    icon: "warning",
+                    buttons: ["Cancelar", "Sí, limpiar todo"],
+                    dangerMode: true,
+                })
+                .then((confirmado) => {
+                    if (confirmado) {
+                        this.turnosDisponibles = [...this.datosOriginales];
+                        this.turnosConfirmados = [];
+                        this.limpiarStorage();
+                        this.renderizarTurnos();
+                        this.actualizarEstadisticas();
+                        
+                        swal("Sistema Limpiado", "Todos los datos han sido eliminados", "success");
+                    }
+                });
+            }
 
-seleccionarTurno();
-// if (resultado) {
-//     alert(resultado);
-// } else {
-//     alert("Operación cancelada.");
-// }
+            // Actualizar estadísticas
+            actualizarEstadisticas() {
+                document.getElementById('stat-disponibles').textContent = this.turnosDisponibles.length;
+                document.getElementById('stat-confirmados').textContent = this.turnosConfirmados.length;
+                document.getElementById('stat-total').textContent = this.turnosDisponibles.length + this.turnosConfirmados.length;
+            }
 
+            // Guardar turnos en localStorage
+            guardarTurnosEnStorage() {
+                const datos = {
+                    disponibles: this.turnosDisponibles,
+                    confirmados: this.turnosConfirmados,
+                    fechaGuardado: new Date().toISOString()
+                };
+                // En un entorno real, aquí usarías localStorage
+                // localStorage.setItem('turnosMedicos', JSON.stringify(datos));
+                
+                // Para efectos de demostración, usamos una variable temporal
+                window.turnosGuardados = datos;
+            }
+
+            // Cargar turnos desde localStorage
+            cargarTurnosDesdeStorage() {
+                try {
+                    const datos = window.turnosGuardados;
+                    
+                    if (datos) {
+                        this.turnosDisponibles = datos.disponibles || [];
+                        this.turnosConfirmados = datos.confirmados || [];
+                    }
+                } catch (error) {
+                    // Si hay error al cargar, usar datos por defecto
+                    this.turnosDisponibles = [];
+                    this.turnosConfirmados = [];
+                }
+            }
+
+            // Limpiar localStorage
+            limpiarStorage() {
+                // localStorage.removeItem('turnosMedicos');
+                window.turnosGuardados = null;
+            }
+        }
+
+        // Inicializar el simulador cuando se carga la página
+        let simulador;
+        document.addEventListener('DOMContentLoaded', () => {
+            simulador = new SimuladorTurnos();
+        });

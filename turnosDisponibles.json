@@ -1,0 +1,107 @@
+[
+                        {
+                            "id": "1", 
+                            "dia": "Lunes 10", 
+                            "hora": "09:00",
+                            "doctor": "Dr. Carlos Martínez",
+                            "especialidad": "Cardiología"
+                        },
+                        {
+                            "id": "2", 
+                            "dia": "Lunes 10", 
+                            "hora": "10:00",
+                            "doctor": "Dra. Ana López",
+                            "especialidad": "Dermatología"
+                        },
+                        {
+                            "id": "3", 
+                            "dia": "Lunes 10", 
+                            "hora": "11:00",
+                            "doctor": "Dr. Roberto Silva",
+                            "especialidad": "Pediatría"
+                        },
+                        {
+                            "id": "4", 
+                            "dia": "Martes 11", 
+                            "hora": "09:00",
+                            "doctor": "Dra. María González",
+                            "especialidad": "Traumatología"
+                        },
+                        {
+                            "id": "5", 
+                            "dia": "Martes 11", 
+                            "hora": "10:00",
+                            "doctor": "Dr. Luis Morales",
+                            "especialidad": "Cardiología"
+                        },
+                        {
+                            "id": "6", 
+                            "dia": "Martes 11", 
+                            "hora": "11:00",
+                            "doctor": "Dra. Sofía Herrera",
+                            "especialidad": "Dermatología"
+                        },
+                        {
+                            "id": "7", 
+                            "dia": "Miércoles 12", 
+                            "hora": "09:00",
+                            "doctor": "Dr. Diego Rodríguez",
+                            "especialidad": "Pediatría"
+                        },
+                        {
+                            "id": "8", 
+                            "dia": "Miércoles 12", 
+                            "hora": "10:00",
+                            "doctor": "Dra. Laura Fernández",
+                            "especialidad": "Traumatología"
+                        },
+                        {
+                            "id": "9", 
+                            "dia": "Miércoles 12", 
+                            "hora": "11:00",
+                            "doctor": "Dr. Carlos Martínez",
+                            "especialidad": "Cardiología"
+                        },
+                        {
+                            "id": "10", 
+                            "dia": "Jueves 13", 
+                            "hora": "09:00",
+                            "doctor": "Dra. Ana López",
+                            "especialidad": "Dermatología"
+                        },
+                        {
+                            "id": "11", 
+                            "dia": "Jueves 13", 
+                            "hora": "10:00",
+                            "doctor": "Dr. Roberto Silva",
+                            "especialidad": "Pediatría"
+                        },
+                        {
+                            "id": "12", 
+                            "dia": "Jueves 13", 
+                            "hora": "11:00",
+                            "doctor": "Dra. María González",
+                            "especialidad": "Traumatología"
+                        },
+                        {
+                            "id": "13", 
+                            "dia": "Viernes 14", 
+                            "hora": "09:00",
+                            "doctor": "Dr. Luis Morales",
+                            "especialidad": "Cardiología"
+                        },
+                        {
+                            "id": "14", 
+                            "dia": "Viernes 14", 
+                            "hora": "10:00",
+                            "doctor": "Dra. Sofía Herrera",
+                            "especialidad": "Dermatología"
+                        },
+                        {
+                            "id": "15", 
+                            "dia": "Viernes 14", 
+                            "hora": "11:00",
+                            "doctor": "Dr. Diego Rodríguez",
+                            "especialidad": "Pediatría"
+                        }
+                    ]

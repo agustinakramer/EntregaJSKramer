@@ -6,90 +6,72 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Turnos</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
 </head>
 
 <body>
 
-  <div class="contenedor">
-    <header>
-      <h1>Agenda de Turnos</h1>
-    </header>
+    <div class="contenedor">
+        <header>
+            <h1><span class="icon-calendar"></span>Centro Médico San Rafael</h1>
+            <p class="subtitle">Sistema de gestión de turnos online</p>
+        </header>
 
-    <main class="agenda">
-      <section class="turnos-disponibles">
-        <h2>Turnos Disponibles</h2>
-        <div id="lista-turnos">
+        <div class="main-content">
+            <!-- Controles principales -->
+            <div class="controls">
+                <button class="btn btn-secondary" id="btn-cargar-turnos">
+                    <span class="icon-refresh"></span>Cargar Nueva Semana
+                </button>
+                <button class="btn btn-primary" id="btn-ver-turnos">
+                    <span class="icon-list"></span>Ver Todos los Turnos
+                </button>
+                <button class="btn btn-danger" id="btn-limpiar-todo">
+                    <span class="icon-cancel"></span>Limpiar Todo
+                </button>
+            </div>
 
-          <div class="turno" data-id="1" data-dia="Lunes 10" data-hora="10:00">
-            <span>Turno 1: Lunes 10 10:00</span>
-            <button>Reservar</button>
-          </div>
+            <!-- Estadísticas -->
+            <div class="stats" id="stats-container">
+                <div class="stat-card">
+                    <div class="stat-number" id="stat-disponibles">0</div>
+                    <div class="stat-label">Turnos Disponibles</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="stat-confirmados">0</div>
+                    <div class="stat-label">Turnos Confirmados</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="stat-total">0</div>
+                    <div class="stat-label">Total de la Semana</div>
+                </div>
+            </div>
 
-          <div class="turno" data-id="2" data-dia="Lunes 10" data-hora="11:00">
-            <span>Turno 2: Lunes 10 11:00</span>
-            <button>Reservar</button>
-          </div>
+            <main class="agenda">
+                <section class="turnos-disponibles">
+                    <h2><span class="icon-clock"></span>Turnos Disponibles</h2>
+                    <div id="lista-turnos">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                            <p>Cargando turnos disponibles...</p>
+                        </div>
+                    </div>
+                </section>
 
-          <div class="turno" data-id="3" data-dia="Lunes 10" data-hora="12:00">
-            <span>Turno 3: Lunes 10 12:00</span>
-            <button>Reservar</button>
-          </div>
-
-          <div class="turno" data-id="4" data-dia="Martes 11" data-hora="10:00">
-            <span>Turno 4: Martes 11 10:00 AM</span>
-            <button>Reservar</button>
-          </div>
-
-          <div class="turno" data-id="5" data-dia="Martes 11" data-hora="11:00">
-            <span>Turno 5: Martes 11 11:00 AM</span>
-            <button>Reservar</button>
-          </div>
-
-          <div class="turno" data-id="6" data-dia="Martes 11" data-hora="12:00">
-            <span>Turno 6: Martes 11 12:00 AM</span>
-            <button>Reservar</button>
-          </div>
-
-          <div class="turno" data-id="7" data-dia="Miércoles 12" data-hora="10:00">
-            <span>Turno 7: Miércoles 12 10:00 AM</span>
-            <button>Reservar</button>
-          </div>
-
-          <div class="turno" data-id="8" data-dia="Miércoles 12" data-hora="11:00">
-            <span>Turno 8: Miércoles 12 11:00 AM</span>
-            <button>Reservar</button>
-          </div>
-
-          <div class="turno" data-id="9" data-dia="Miércoles 12" data-hora="12:00">
-            <span>Turno 9: Miércoles 12 12:00 AM</span>
-            <button>Reservar</button>
-          </div>
-
-          <div class="turno" data-id="10" data-dia="Jueves 13" data-hora="10:00">
-            <span>Turno 10: Jueves 13 10:00 AM</span>
-            <button>Reservar</button>
-          </div>
-
-          <div class="turno" data-id="11" data-dia="Jueves 13" data-hora="11:00">
-            <span>Turno 11: Jueves 13 11:00 AM</span>
-            <button>Reservar</button>
-          </div>
-
-          <div class="turno" data-id="12" data-dia="Jueves 13" data-hora="12:00">
-            <span>Turno 12: Jueves 13 12:00 AM</span>
-            <button>Reservar</button>
-          </div>
-
-
+                <section class="turnos-confirmados">
+                    <h2><span class="icon-check"></span>Turnos Confirmados</h2>
+                    <div id="confirmados">
+                        <div class="empty-state">
+                            <div style="font-size: 4rem; margin-bottom: 20px;">📋</div>
+                            <h3>No hay turnos confirmados</h3>
+                            <p>Los turnos que reserves aparecerán aquí</p>
+                        </div>
+                    </div>
+                </section>
+            </main>
         </div>
-      </section>
-      <section class="turnos-confirmados">
-        <h2>Turnos Confirmados</h2>
-        <div id="confirmados">
-        </div>
-      </section>
-    </main>
-  </div>
+    </div>
 
   <script src="agendaDeTurnos.js"></script>
 </body>
