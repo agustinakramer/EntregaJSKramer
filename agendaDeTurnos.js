@@ -18,27 +18,29 @@ class SimuladorTurnos {
 
   async cargarDatos() {
     try {
-      // Simulamos una petición fetch con datos JSON
-      const response = await fetch("./turnosDisponibles.json")
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Error del servidor " + response.statusText);
-          }
-          return response.json();
-        })
-        .then((data) => {
-          console.log(data);
-        });
-      this.datosOriginales = response.turnos;
-
-      // Si no hay turnos cargados en storage, usar los datos originales
-      if (this.turnosDisponibles.length === 0) {
-        this.turnosDisponibles = [...this.datosOriginales];
-      }
+        const data = await fetch("./turnosDisponibles.json")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Error del servidor " + response.statusText);
+                }
+                return response.json();
+            })
+            .then(jsonData => {
+                console.log("Datos cargados:", jsonData);
+                return jsonData;
+            });
+            
+        this.datosOriginales = data;
+        
+        if (this.turnosDisponibles.length === 0) {
+            this.turnosDisponibles = [...this.datosOriginales];
+        }
+        
     } catch (error) {
-      swal("Error", "No se pudieron cargar los datos del sistema", "error");
+        console.error("Error cargando datos:", error);
+        swal("Error", "No se pudieron cargar los datos del sistema", "error");
     }
-  }
+}
   // Configurar eventos de la interfaz
             configurarEventos() {
                 document.getElementById('btn-cargar-turnos').addEventListener('click', () => this.cargarNuevaSemana());
@@ -261,10 +263,6 @@ class SimuladorTurnos {
                     confirmados: this.turnosConfirmados,
                     fechaGuardado: new Date().toISOString()
                 };
-                // En un entorno real, aquí usarías localStorage
-                // localStorage.setItem('turnosMedicos', JSON.stringify(datos));
-                
-                // Para efectos de demostración, usamos una variable temporal
                 window.turnosGuardados = datos;
             }
 
